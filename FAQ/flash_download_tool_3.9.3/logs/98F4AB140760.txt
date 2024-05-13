@@ -1,0 +1,258 @@
+*************************** START ****************************
+START TIME: 202301161708
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+mac l: 0xab140760
+mac h: 0x4b98f4
+crc_cal: 75
+crc_read: 75
+crc_test: 0
+ESP32 MAC CRC OK
+get mac res: 1
+get flash id : 0x001840c8
+manufacturer_id: 0xc8
+device_id: 0x4018
+
+Leaving...
+com closed
+Use time: 3 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202301161709
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+mac l: 0xab140760
+mac h: 0x4b98f4
+crc_cal: 75
+crc_read: 75
+crc_test: 0
+ESP32 MAC CRC OK
+get mac res: 1
+get flash id : 0x001840c8
+manufacturer_id: 0xc8
+device_id: 0x4018
+
+Leaving...
+com closed
+Use time: 3 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202301161710
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+mac l: 0xab140760
+mac h: 0x4b98f4
+crc_cal: 75
+crc_read: 75
+crc_test: 0
+ESP32 MAC CRC OK
+get mac res: 1
+get flash id : 0x001840c8
+manufacturer_id: 0xc8
+device_id: 0x4018
+
+Leaving...
+com closed
+Use time: 3 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202301161720
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+mac l: 0xab140760
+mac h: 0x4b98f4
+crc_cal: 75
+crc_read: 75
+crc_test: 0
+ESP32 MAC CRC OK
+get mac res: 1
+get flash id : 0x001840c8
+manufacturer_id: 0xc8
+device_id: 0x4018
+Wrote 205984 bytes (112173 compressed) at 0x00001000 in 2.0 seconds (effective 814.9 kbit/s)...
+Hash of data verified.
+Leaving...
+com closed
+Use time: 4 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202301161722
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+mac l: 0xab140760
+mac h: 0x4b98f4
+crc_cal: 75
+crc_read: 75
+crc_test: 0
+ESP32 MAC CRC OK
+get mac res: 1
+get flash id : 0x001840c8
+manufacturer_id: 0xc8
+device_id: 0x4018
+Wrote 205984 bytes (112173 compressed) at 0x00010000 in 1.7 seconds (effective 955.8 kbit/s)...
+Hash of data verified.
+Leaving...
+com closed
+Use time: 3 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202301161724
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+mac l: 0xab140760
+mac h: 0x4b98f4
+crc_cal: 75
+crc_read: 75
+crc_test: 0
+ESP32 MAC CRC OK
+get mac res: 1
+get flash id : 0x001840c8
+manufacturer_id: 0xc8
+device_id: 0x4018
+Wrote 205984 bytes (112173 compressed) at 0x00010000 in 1.7 seconds (effective 956.9 kbit/s)...
+Hash of data verified.
+Leaving...
+com closed
+Use time: 3 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202301161725
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+mac l: 0xab140760
+mac h: 0x4b98f4
+crc_cal: 75
+crc_read: 75
+crc_test: 0
+ESP32 MAC CRC OK
+get mac res: 1
+get flash id : 0x001840c8
+manufacturer_id: 0xc8
+device_id: 0x4018
+Wrote 205984 bytes (112173 compressed) at 0x00010000 in 1.7 seconds (effective 959.3 kbit/s)...
+Hash of data verified.
+Leaving...
+com closed
+Use time: 3 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202301251300
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+mac l: 0xab140760
+mac h: 0x4b98f4
+crc_cal: 75
+crc_read: 75
+crc_test: 0
+ESP32 MAC CRC OK
+get mac res: 1
+get flash id : 0x001840c8
+manufacturer_id: 0xc8
+device_id: 0x4018
+Wrote 805792 bytes (518974 compressed) at 0x00010000 in 7.6 seconds (effective 845.0 kbit/s)...
+Hash of data verified.
+Leaving...
+com closed
+Use time: 10 s
+Download result: PASS
+*************************** END ****************************
+
+*************************** START ****************************
+START TIME: 202304271130
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+mac l: 0xab140760
+mac h: 0x4b98f4
+crc_cal: 75
+crc_read: 75
+crc_test: 0
+ESP32 MAC CRC OK
+get mac res: 1
+get flash id : 0x001840c8
+manufacturer_id: 0xc8
+device_id: 0x4018
+Wrote 808272 bytes (516561 compressed) at 0x00010000 in 7.7 seconds (effective 844.9 kbit/s)...
+Hash of data verified.
+Leaving...
+com closed
+Use time: 10 s
+Download result: PASS
+*************************** END ****************************
+

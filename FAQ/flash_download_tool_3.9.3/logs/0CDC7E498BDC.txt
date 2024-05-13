@@ -1,0 +1,31 @@
+*************************** START ****************************
+START TIME: 202304271002
+CONNECT BAUD: 115200
+set state: ESP_DL_SYNC
+serial port opened
+-----------
+baud:115200
+root baud:115200
+-------------
+===============BAUD : 115200===============CALL DEVICE SYNC
+connecting...
+mac l: 0x7e498bdc
+mac h: 0xf80cdc
+crc_cal: 248
+crc_read: 248
+crc_test: 0
+ESP32 MAC CRC OK
+get mac res: 1
+get flash id : 0x00184020
+manufacturer_id: 0x20
+device_id: 0x4018
+Find xmc flash and status:0x600200
+Update flash status done!
+Wrote 808272 bytes (516561 compressed) at 0x00010000 in 8.3 seconds (effective 779.1 kbit/s)...
+Hash of data verified.
+Leaving...
+com closed
+Use time: 11 s
+Download result: PASS
+*************************** END ****************************
+

@@ -1,6 +1,6 @@
-#include <WiFi.h>
-#include <PubSubClient.h>
-#include <Wire.h>
+#include <WiFi.h>            //библиотека для работы с вайфай
+#include <PubSubClient.h>    //библиотека для подключения к серверу
+#include <Wire.h>            //библиотека для работы с доп модулями
 
 ////////////////////// Настройки //////////////////////
 // Wi-Fi
@@ -12,6 +12,7 @@ int mqtt_port = 17120;               //порт
 const char* mqtt_login = "u_S4ED9W";    // пользователь
 const char* mqtt_pass = "WlvkOVC5";     //пароль
 
+//стандартные параметры для подключения к вайфай
 WiFiClient espClient;
 PubSubClient client(espClient);
 unsigned long lastMsg = 0;
@@ -19,9 +20,7 @@ unsigned long lastMsg = 0;
 char msg[MSG_BUFFER_SIZE];
 int value = 0;
 
-/////////////////// модуль светодиодов ///////////////////
-
-#include "TLC59108.h" // библиотека для модуля MGL_RGB1
+#include "TLC59108.h" // библиотека для модуля MGL_RGB1 - светодиод
 #define HW_RESET_PIN 0 // Только програмнный сброс
 #define I2C_ADDR TLC59108::I2C_ADDR::BASE
 TLC59108 leds(I2C_ADDR + 7); // Без перемычек добавляется 3 бита адреса
@@ -31,8 +30,8 @@ TLC59108 leds3(I2C_ADDR + 6); // Стоит только одна перемыч
 #include <ESP32_Servo.h>                      // конфигурация сервомотора // servo configuration
 
 #define sensor_addr 0x39         // датчик пламени
-float ir_data = 0;
-float vis_data = 0;
+float ir_data = 0;               // инфракрасный спектр
+float vis_data = 0;              // визуальный спектр
 
 #include <Adafruit_MCP4725.h>                           // динамик
 Adafruit_MCP4725 buzzer;
@@ -161,6 +160,8 @@ void setup()
   //mcp3021.begin(adcDeviceId);
 }
 
+uint32_t tmr1;
+const char* ir_topic = "IK_data";
 
 //Main program
 void loop()
@@ -173,50 +174,22 @@ void loop()
   poll_sensor();
   Serial.println("Visible = " + String(vis_data, 1) + " μW/cm2");
   Serial.println("IR = " + String(ir_data, 1) + " μW/cm2");
+  if (millis() -tmr1 >= (5 * 1000)) {
+    tmr1 = millis();
+    send_data();
+  }
+  
   delay(150);
 
   if (ir_data >= 800) {
-    on_off_light(0);
-    Serial.println("Fire!!!");
-    alarm_picture();
-
-    alarm(400);
-
-    open_close_door(1);
-    delay(150);
-
-    alarm(400);
-
-    on_off_cooler(0);
-    delay(150);
-
-    alarm(400);
-
-    on_off_power(0);
-    delay(150);
-
-    alarm(400);
-  } else {
-    on_off_light(1);
-
-    on_off_cooler(1);
-    delay(150);
-
-    on_off_power(1);
-    delay(150);
-
-    open_close_door(0);
-
-    generic_TV_picture();
-    delay(150);
-  }  
+    on_alarm();
+  }
 
   Serial.println("====================================================================================================");
 }
 
 //MQTT connection
 void setup_wifi() {
-
   delay(10);
   // Подключение к сети
   Serial.println();
@@ -248,14 +221,25 @@ void callback(char* topic, byte* payload, unsigned int length) {
     Serial.print((char)payload[i]);
   }
   Serial.println();
+  Serial.println(String(topic));
 
-  print(typeOf(payload[0]));
-  on_off_light(payload[0]);
-  // Если принята единица то включить светодиод
-  if ((char)payload[0] == '1') {
-    digitalWrite(LED, 1);
-  } else {
-    digitalWrite(LED, 0);  // при нуле - выключить
+  if (String(topic) == "Light") {
+    on_off_light((char)payload[0]);
+  }
+  if (String(topic) == "Elec") {
+    on_off_power((char)payload[0]);
+  }
+  if (String(topic) == "Door") {
+    open_close_door((char)payload[0]);
+  }
+  if (String(topic) == "Vent") {
+    on_off_cooler((char)payload[0]);
+  }
+  if (String(topic) == "Fire") {
+    off_alarm((char)payload[0]);
+  }
+  if (String(topic) == "TV") {
+    generic_TV_picture((char)payload[0]);
   }
 }
 
@@ -272,6 +256,12 @@ void reconnect() {
       Serial.println("connected");
       // ... и подписки на топик
       client.subscribe("Fire");
+      client.subscribe("Elec");
+      client.subscribe("Vent");
+      client.subscribe("Door");
+      client.subscribe("Light");
+      client.subscribe("TV");
+      client.subscribe("IK_data");
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
@@ -282,11 +272,52 @@ void reconnect() {
   }
 }
 
-//Funtions
+//Funсtions
+//отправка данных с датчика пламени на Алису
+void send_data() {
+  client.publish(ir_topic, String(ir_data, 1).c_str(), false);
+}
+//включение пожарной сигнализации
+void on_alarm() {
+  on_off_light(0);
+  Serial.println("Fire!!!");
+  alarm_picture();
+
+  alarm(400);
+
+  open_close_door(1);
+  delay(150);
+
+  alarm(400);
+
+  on_off_cooler(0);
+  delay(150);
+
+  alarm(400);
+
+  on_off_power(0);
+  delay(150);
+
+  alarm(400);
+}
+//выключение пожарной сигнализации
+void off_alarm(char status) {
+  if (status == '1') {
+    on_off_light(1);
+
+    on_off_cooler(1);
+
+    on_off_power(1);
+
+    open_close_door(0);
+
+    generic_TV_picture(1);
+  }
+}
 
 //включение выключение света
-void on_off_light(int status) {
-  if (status == 1) {
+void on_off_light(char status) {
+  if (status == '1') {
     leds.setBrightness(0, 0xcc);
     leds2.setBrightness(0, 0xcc);
     leds3.setBrightness(0, 0xcc);
@@ -310,8 +341,8 @@ void on_off_light(int status) {
 }
 
 //включение выключение электричества
-void on_off_power(int status) {
-  if (status == 1) {
+void on_off_power(char status) {
+  if (status == '1') {
     ledcWrite(5, 1024);
     Serial.println("Power ON");
   } else {
@@ -321,8 +352,8 @@ void on_off_power(int status) {
 }
 
 //включение выключение вентиляции
-void on_off_cooler(int status) {
-  if (status == 1) {
+void on_off_cooler(char status) {
+  if (status == '0') {
     digitalWrite(wind, HIGH);
     Serial.println("Cooler ON");
   } else {
@@ -332,9 +363,9 @@ void on_off_cooler(int status) {
 }
 
 //открытие закрытие двери
-void open_close_door(int status) {
-  if (status == 1) {
-    myservo.write(90);
+void open_close_door(char status) {
+  if (status == '1') {
+    myservo.write(80);
     Serial.println("Door Open!");
   } else {
     myservo.write(170);
@@ -342,13 +373,20 @@ void open_close_door(int status) {
   }
 }
 
-//Картинка заглушка для ТВ
-void generic_TV_picture() {
-    lcd.begin();
-    lcd.gotoxy (0, 0);
-    lcd.clear (0, 0, 128, 64, 0x00);
-    lcd.blit (picture, sizeof picture);
-    Serial.println("Display TV");
+//Картинка для ТВ
+void generic_TV_picture(char status) {
+    if (status == '1') {
+      lcd.begin();
+      lcd.gotoxy (0, 0);
+      lcd.clear (0, 0, 128, 64, 0x00);
+      lcd.blit (picture, sizeof picture);
+      Serial.println("Display TV ON");
+    } else {
+      lcd.begin();
+      lcd.gotoxy (0, 0);
+      lcd.clear (0, 0, 128, 64, 0x00);
+      Serial.println("Display TV OFF");
+    }    
 }
 
 //Картинка тревоги на ТВ
@@ -358,13 +396,10 @@ void alarm_picture() {
   lcd.clear (0, 0, 128, 64, 0x00);
   lcd.gotoxy (10, 53); // устанавливаем курсор в координату (40,53)
   lcd.string ("Leave building now!", false); // пишем фразу для температуры
-  char buf[8]; // создаем переменную типа char
   lcd.gotoxy (25, 39); // устанавливаем курсор в координату (40,39)
   lcd.string ("Fire attempt!" , false);// пишем фразу для влажности
-  char buf1[8]; // создаем переменную типа char
   lcd.gotoxy (40, 22); // устанавливаем курсор в координату (40,22)
   lcd.string ("Warning!", false); // пишем фразу для давления
-  char buf2[8]; // создаем переменную типа char
   delay(150);
 }
 
@@ -421,7 +456,7 @@ void note( int type, int duration) {   // нота (какая нота, дли�
   leds2.setBrightness(3, 0x00);
   leds3.setBrightness(3, 0x00);
 }
-/////////////////////////////////////////////////// для MGS-FR403
+/////////////////////////////////////////////////// для MGS-FR403 - датчик пламени
 void init_sensor() {
   Wire.begin();
   Wire.beginTransmission(sensor_addr);
